@@ -1,0 +1,44 @@
+<div class="text-center font-semibold text-3xl text-black-alpha-80 mb-5">
+  Email
+</div>
+<p class="opacity-60">
+  Please enter your email address to get otp for your account.
+</p>
+<div [formGroup]="otpForm" class="w-full gap-2">
+  <div class="w-full flex justify-content-between">
+    <div class="">Email</div>
+    <div
+      *ngIf="
+        otpForm.controls['email'].invalid &&
+        (otpForm.controls['email'].dirty || otpForm.controls['email'].touched)
+      "
+      class="text-red-500 text-xs -mb-5"
+    >
+      <div *ngIf="otpForm.controls['email'].hasError('required')">
+        (*)Email is required
+      </div>
+
+      <div *ngIf="otpForm.controls['email'].hasError('email')">
+        (*)Email is not valid.
+      </div>
+    </div>
+  </div>
+  <input
+    pInputText
+    id="email"
+    formControlName="email"
+    type="text"
+    class="w-full"
+  />
+</div>
+
+<div class="flex justify-content-end mt-2">
+  <p-button
+    styleClass="w-10rem bg-cyan-500"
+    icon="pi pi-user"
+    label="Send"
+    [loading]="loading"
+    [disabled]="otpForm.invalid"
+    (onClick)="sendOtp()"
+  ></p-button>
+</div>

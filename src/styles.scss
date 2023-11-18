@@ -1,0 +1,108 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeflex/primeflex.scss";
+@import "primeicons/primeicons.css";
+html,
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+table {
+    width: 100%;
+}
+
+table th {
+    height: 3rem;
+    background-color: #20bdf4;
+    padding: 4px 8px;
+    text-align: center;
+    color: #fff;
+}
+
+table td {
+    padding: 0.7rem 0.7rem;
+    text-align: center;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.flex {
+    box-sizing: border-box;
+}
+
+.flex-2 {
+    flex: 2;
+}
+
+.flex-3 {
+    flex: 3;
+}
+
+.flex-4 {
+    flex: 4;
+}
+
+.flex-5 {
+    flex: 5;
+}
+
+.flex-6 {
+    flex: 6;
+}
+
+.flex-7 {
+    flex: 7;
+}
+
+.flex-8 {
+    flex: 8;
+}
+
+.flex-10 {
+    flex: 10;
+}
+
+.link {
+    padding: 0.3rem 1rem;
+    margin-bottom: 1rem;
+}
+
+.link:hover {
+    border-radius: 1.5rem;
+    background-color: #e0e0e0;
+}
+
+.link-active {
+    background-color: #00b4ff;
+    color: #fff;
+}
+
+
+/* width */
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+
+/* Track */
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px #ccc;
+    border-radius: 4px;
+}
+
+
+/* Handle */
+
+::-webkit-scrollbar-thumb {
+    background: cyan;
+    border-radius: 10px;
+}

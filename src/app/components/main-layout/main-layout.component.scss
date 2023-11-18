@@ -1,0 +1,24 @@
+.main {
+}
+
+.header {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 0px 20px -0px,
+    rgba(0, 0, 0, 0.3) 0px 0px 20px -0px;
+  .border-radius {
+    border-radius: 60px;
+  }
+  .custom-panel {
+    height: 100px !important;
+    width: 100px !important;
+    background-color: red;
+  }
+  .beffore::before {
+    content: "";
+    border-width: 10px 15px;
+    border-style: solid;
+    position: absolute;
+    border-color: transparent transparent white transparent;
+    top: -20px;
+    right: 24px;
+  }
+}

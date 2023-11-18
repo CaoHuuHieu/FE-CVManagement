@@ -1,0 +1,167 @@
+<div class="flex bg-white w-full border-round-xl p-5">
+  <div class="flex w-full justify-content-center">
+    <div [formGroup]="registerForm" class="w-7">
+      <div class="text-center font-medium">CREATE ACCOUNT</div>
+      <div class="w-full gap-2 mt-3">
+        <div class="w-full flex justify-content-between">
+          <div class="">Full Name</div>
+          <div
+            *ngIf="
+              registerForm.controls['fullName'].invalid &&
+              (registerForm.controls['fullName'].dirty ||
+                registerForm.controls['fullName'].touched)
+            "
+            class="text-red-500 text-xs -mb-5"
+          >
+            <div *ngIf="registerForm.controls['fullName'].hasError('required')">
+              (*)Full name is required
+            </div>
+          </div>
+        </div>
+        <input
+          pInputText
+          id="fullName"
+          formControlName="fullName"
+          type="text"
+          class="w-full"
+        />
+      </div>
+      <div class="w-full gap-2 mt-3">
+        <div class="w-full flex justify-content-between">
+          <div class="">Company</div>
+          <div
+            *ngIf="
+              registerForm.controls['company'].invalid &&
+              (registerForm.controls['company'].dirty ||
+                registerForm.controls['company'].touched)
+            "
+            class="text-red-500 text-xs -mb-5"
+          >
+            <div *ngIf="registerForm.controls['company'].hasError('required')">
+              (*)Company is required
+            </div>
+          </div>
+        </div>
+        <input
+          pInputText
+          id="company"
+          formControlName="company"
+          type="text"
+          class="w-full"
+        />
+      </div>
+
+      <div class="w-full gap-2 mt-3">
+        <div class="w-full flex justify-content-between">
+          <div class="">Email</div>
+          <div
+            *ngIf="
+              registerForm.controls['email'].invalid &&
+              (registerForm.controls['email'].dirty ||
+                registerForm.controls['email'].touched)
+            "
+            class="text-red-500 text-xs -mb-5"
+          >
+            <div *ngIf="registerForm.controls['email'].hasError('required')">
+              (*)Email is required
+            </div>
+
+            <div *ngIf="registerForm.controls['email'].hasError('email')">
+              (*)Email is not valid.
+            </div>
+          </div>
+        </div>
+        <input
+          pInputText
+          id="email"
+          formControlName="email"
+          type="text"
+          class="w-full"
+        />
+      </div>
+
+      <div class="w-full gap-2 mt-3">
+        <div class="w-full flex justify-content-between">
+          <div class="">Role</div>
+        </div>
+
+        <p-dropdown
+          styleClass="w-full"
+          [options]="roles"
+          [(ngModel)]="selectedRole"
+          optionLabel="name"
+          formControlName="role"
+          id="role"
+        ></p-dropdown>
+      </div>
+
+      <div class="w-full gap-2 mt-3">
+        <div class="w-full flex justify-content-between">
+          <div class="">Password</div>
+          <div
+            *ngIf="
+              (!cbkPassword &&
+                this.registerForm.get('password')?.value == '') ||
+              this.registerForm.get('password')?.value.length < 8
+            "
+            class="text-red-500 text-xs -mb-5"
+          >
+            <div
+              *ngIf="
+                !cbkPassword && this.registerForm.get('password')?.value == ''
+              "
+            >
+              (*) Password is required
+            </div>
+            <div
+              *ngIf="
+                !cbkPassword &&
+                registerForm.controls['password'].dirty &&
+                this.registerForm.get('password')?.value.length < 8 &&
+                this.registerForm.get('password')?.value != ''
+              "
+            >
+              (*) Password is must more than 8 charactor
+            </div>
+          </div>
+        </div>
+        <input
+          [readonly]="cbkPassword"
+          pInputText
+          id="password"
+          formControlName="password"
+          type="password"
+          class="w-full"
+          (ngModelChange)="onPasswordChange()"
+        />
+      </div>
+      <div
+        class="w-full gap-2 mt-3 flex align-items-center justify-content-center gap-1"
+      >
+        <input
+          type="checkbox"
+          checked
+          id="cblPassword"
+          (change)="ckbGeneratePasswordSeleted($event)"
+        />
+
+        <label for="cblPassword">Auto generate password?</label>
+      </div>
+      <div class="flex align-items-center justify-content-center">
+        <div class="flex justify-content-center mt-2">
+          <p-button
+            styleClass="w-10rem bg-blue-500"
+            icon="pi pi-user"
+            label="Register"
+            [loading]="loading"
+            [disabled]="
+              registerForm.invalid || (isInvalidPassword && !cbkPassword)
+            "
+            (onClick)="registerAccount()"
+          ></p-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<p-toast></p-toast>

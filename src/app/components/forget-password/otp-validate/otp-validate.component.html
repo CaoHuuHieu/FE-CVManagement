@@ -1,0 +1,64 @@
+<div class="text-center font-semibold text-3xl text-black-alpha-80 mb-5">
+  Send Otp
+</div>
+<div class="opacity-80">
+  <p>
+    We have sent an otp code to your email, please
+    <a href="https://mail.google.com/" target="blank" class="text-cyan-500"
+      >click here</a
+    >
+    to check and enter the received otp.
+  </p>
+  <p>
+    Haven't received the otp code:
+    <button
+      href="#"
+      class="text-cyan-500"
+      (click)="resendOtp()"
+      [disabled]="isResendClick"
+      class="border-none outline-none text-cyan-500 bg-white text-base pointer hover:underline"
+    >
+      Resend Otp
+    </button>
+  </p>
+</div>
+<div [formGroup]="otpForm" class="w-full gap-2">
+  <div class="w-full flex justify-content-between">
+    <div class="">Otp</div>
+    <div
+      *ngIf="
+        otpForm.controls['otp'].invalid &&
+        (otpForm.controls['otp'].dirty || otpForm.controls['otp'].touched)
+      "
+      class="text-red-500 text-xs -mb-5"
+    >
+      <div *ngIf="otpForm.controls['otp'].hasError('required')">
+        (*)OTP is required
+      </div>
+    </div>
+
+    <div *ngIf="isOtpValid" class="text-red-500 text-xs -mb-5">
+      <div>(*)OTP is not right</div>
+    </div>
+  </div>
+  <input
+    pInputText
+    id="otp"
+    formControlName="otp"
+    type="text"
+    class="w-full"
+    [class]="isOtpValid ? 'border-red-500' : ''"
+  />
+</div>
+
+<div class="flex justify-content-end mt-2">
+  <p-button
+    styleClass="w-10rem bg-cyan-500"
+    icon="pi pi-user"
+    label="Send"
+    [loading]="loading"
+    [disabled]="otpForm.invalid"
+    (onClick)="validateOtp()"
+  ></p-button>
+</div>
+<p-toast></p-toast>

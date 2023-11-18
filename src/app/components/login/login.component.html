@@ -1,0 +1,67 @@
+<div class="h-screen w-screen bg-no-repeat bg-cover flex justify-content-center align-items-center" style="background-image: url(../../../assets/background-login.jpg)">
+    <div class="flex flex-column bg-white w-5 border-round-xl">
+        <div class="w-full flex justify-content-around pt-3 pb-5 px-3 gap-2 align-items-center">
+            <div class="flex-1 flex justify-content-center">
+                <img src="../../../assets/logo_login.jpg" alt="" class="w-10rem h-10rem" />
+            </div>
+            <div [formGroup]="loginForm" class="flex-2">
+                <div class="text-center font-semibold text-3xl text-black-alpha-80">
+                    Login
+                </div>
+                <div class="w-full gap-2">
+                    <div class="w-full flex justify-content-between">
+                        <div class="">Email</div>
+                        <div *ngIf="
+                loginForm.controls['email'].invalid &&
+                (loginForm.controls['email'].dirty ||
+                  loginForm.controls['email'].touched)
+              " class="text-red-500 text-xs -mb-5">
+                            <div *ngIf="loginForm.controls['email'].hasError('required')">
+                                (*)Email is required
+                            </div>
+
+                            <div *ngIf="loginForm.controls['email'].hasError('email')">
+                                (*)Email is not valid.
+                            </div>
+                        </div>
+                    </div>
+                    <input pInputText id="email" formControlName="email" type="text" class="w-full" />
+                </div>
+                <div class="w-full gap-2 mt-3">
+                    <div class="w-full flex justify-content-between">
+                        <div class="">Password</div>
+                        <div *ngIf="
+                loginForm.controls['password'].invalid &&
+                (loginForm.controls['password'].dirty ||
+                  loginForm.controls['password'].touched)
+              " class="text-red-500 text-xs -mb-5">
+                            <div *ngIf="loginForm.controls['password'].hasError('required')">
+                                (*)Password is required
+                            </div>
+
+                            <div *ngIf="loginForm.controls['password'].hasError('minlength')">
+                                (*)Password must be more than 8 characters
+                            </div>
+                        </div>
+                    </div>
+                    <input pInputText id="password" formControlName="password" type="password" class="w-full" (keydown.enter)="login()" />
+                </div>
+                <div class="flex align-items-center justify-content-between">
+                    <a class="text-cyan-300 no-underline" routerLink="/forget-password">Forgot password?</a
+          >
+          <div class="flex justify-content-end mt-2">
+            <p-button
+              styleClass="w-10rem bg-cyan-500"
+              icon="pi pi-user"
+              label="Login"
+              [loading]="loading"
+              [disabled]="loginForm.invalid"
+              (onClick)="login()"
+            ></p-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<p-toast></p-toast>

@@ -1,0 +1,100 @@
+<p-dialog
+  header="Assign Customer To Human Resource"
+  [(visible)]="isDisplayAssignModal"
+  [modal]="true"
+  [style]="{ width: '40vw', height: '500px' }"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="closeAssignModal()"
+>
+  <div>
+    <div class="w-full">
+      <div>Human resource</div>
+      <p-multiSelect
+        [options]="humanResources"
+        [(ngModel)]="selectedHumanResources"
+        styleClass="w-full"
+        placeholder="Select human resource"
+        optionLabel="name"
+        (onChange)="onHrSelected()"
+      >
+        <ng-template let-value pTemplate="selectedItems">
+          <div
+            class="inline-flex align-items-center gap-2 px-1"
+            *ngFor="let humanResource of selectedHumanResources"
+          >
+            <div class="flex align-items-start gap-2">
+              <img src="../../../assets/avatar.png" class="mr-1 w-2rem" />
+              <div>{{ humanResource.fullName }}</div>
+            </div>
+          </div>
+          <div
+            *ngIf="
+              !selectedHumanResources || selectedHumanResources.length === 0
+            "
+          >
+            Select human resource
+          </div>
+        </ng-template>
+        <ng-template let-humanresource pTemplate="item">
+          <div class="flex align-items-start">
+            <div>
+              <img
+                src="../../../assets/avatar.png"
+                alt=""
+                class="w-2rem h-2rem mr-2"
+              />
+            </div>
+            <div class="">
+              <div class="font-medium">{{ humanresource.fullName }}</div>
+              <div class="text-sm">{{ humanresource.company }}</div>
+            </div>
+          </div>
+        </ng-template>
+      </p-multiSelect>
+    </div>
+    <div class="w-full mt-5">
+      <div class="w-full mb-1">Customer seleted</div>
+      <div class="ml-5">
+        <p-virtualScroller
+          [value]="selectedCustomers"
+          class="w-full"
+          [style]="{ width: '100%' }"
+          scrollHeight="200px"
+          [itemSize]="50"
+        >
+          <ng-template pTemplate="item" let-customer>
+            <div
+              class="flex align-items-start h-full"
+              [ngClass]="{ 'surface-hover': customer.index % 2 === 0 }"
+            >
+              <div class="mr-2">
+                <img
+                  src="../../../assets/avatar.png"
+                  alt=""
+                  class="w-2rem h-2rem"
+                />
+              </div>
+              <div class="">
+                <div class="font-medium">{{ customer.fullName }}</div>
+                <div class="text-sm">{{ customer.company }}</div>
+              </div>
+            </div>
+          </ng-template>
+        </p-virtualScroller>
+      </div>
+    </div>
+    <div class="flex align-items-center justify-content-center">
+      <div class="flex justify-content-center mt-2">
+        <p-button
+          styleClass="w-10rem bg-cyan-500"
+          icon="pi pi-user"
+          label="Assign"
+          [disabled]="!isSelectedHr"
+          [loading]="loading"
+          (onClick)="assignCustomerToHr()"
+        ></p-button>
+      </div>
+    </div>
+  </div>
+</p-dialog>

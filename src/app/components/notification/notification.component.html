@@ -1,0 +1,35 @@
+<div class="text-center p-2 border-round-top-2xl text-lg bg-cyan-500">
+    Notifications
+</div>
+<div class="flex justify-content-between mb-1 bg border-bottom-1 p-2">
+    <div>
+        <p-button icon="pi pi-bars" styleClass="mr-2 w-2rem h-2rem" [rounded]="true" (onClick)="viewAllNotification()" pTooltip="All" tooltipPosition="bottom"></p-button>
+        <p-button icon="pi pi-bell" styleClass="mr-2 w-2rem h-2rem" [rounded]="true" (onClick)="viewAllUnreadNotification()" severity="warning" pTooltip="Unread" tooltipPosition="bottom"></p-button>
+    </div>
+    <div>
+        <p-button icon="pi pi-check" styleClass="mr-2 w-2rem h-2rem" [rounded]="true" (onClick)="maskAllNotificaitonAsRead()" [outlined]="true" pTooltip="Mask as read" tooltipPosition="bottom"></p-button>
+    </div>
+</div>
+<div class="px-2">
+    <div *ngIf="notifications.length > 0">
+        <p-virtualScroller [value]="notifications" [style]="{ width: '100%' }" scrollHeight="70vh" [itemSize]="70">
+            <ng-template pTemplate="item" let-notification>
+                <a routerLink="{{ notification.link }}" [class]="
+            (notification.status == 0 ? 'surface-200' : '') +
+            ' p-2 no-underline block text-black-alpha-90 line-height-2  block hover:surface-200 overflow-hidden   '
+          " style="
+            height: 4rem;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+          ">
+                    <span class="text-teal-700">{{
+            notification.createDate | date : "[HH:mm-dd/MM/yyyy]"
+          }}</span> {{ notification.message }}</a>
+            </ng-template>
+        </p-virtualScroller>
+    </div>
+    <div *ngIf="notifications.length == 0">
+        <app-no-data></app-no-data>
+    </div>
+</div>

@@ -1,0 +1,205 @@
+<div></div>
+
+<p-tabView styleClass="tabview-custom">
+  <p-tabPanel>
+    <ng-template pTemplate="header">
+      <i class="pi pi-user mr-2"></i>
+      <span>Customer</span>
+    </ng-template>
+    <div>
+      <div class="card">
+        <p-table
+          #cvs
+          [paginator]="true"
+          [rows]="rows"
+          [showCurrentPageReport]="true"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          (onPage)="pageChange($event)"
+          [value]="customerOfHrs"
+          dataKey="id"
+          [globalFilterFields]="['fullName', 'email', 'company']"
+          [responsive]="true"
+          [tableStyle]="{ 'min-width': '20rem' }"
+        >
+          <ng-template pTemplate="caption" class="flex justify-content-between">
+            <div class="font-medium">CUSTOMER LIST OF HR</div>
+            <div class="flex justify-content-between mt-3">
+              <div>
+                <div class="text-sm font-normal">Name: {{ hr.fullName }}</div>
+                <div class="text-sm font-normal">Company: {{ hr.company }}</div>
+              </div>
+              <div class="flex justify-content-end">
+                <div>
+                  <button
+                    *ngIf="role === 'HrManager'"
+                    (click)="blockAccount(hr.id, hr.status)"
+                    icon="pi pi-external-link"
+                    class="border-none outline-none mr-2 border-round-sm text-white font-semibold pointer"
+                    style="background-color: #20bdf4; padding: 10px 16px"
+                  >
+                    {{ hr.status == 0 ? "Unlock Account" : "Block Account" }}
+                  </button>
+                </div>
+                <div>
+                  <span class="p-input-icon-left ml-auto">
+                    <i class="pi pi-search"></i>
+                    <input
+                      pInputText
+                      class="pl-5 py-2 border-round-smtext-base border-cyan-500"
+                      type="text"
+                      (input)="
+                        cvs.filterGlobal($any($event.target).value, 'contains')
+                      "
+                      placeholder="Search keyword"
+                    />
+                  </span>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th pSortableColumn="name" style="width: 30%">
+                Full Name
+                <p-sortIcon field="name"></p-sortIcon>
+              </th>
+              <th pSortableColumn="email" style="width: 10%">
+                Email
+                <p-sortIcon field="email"></p-sortIcon>
+              </th>
+              <th pSortableColumn="company" style="width: 30%">
+                Company
+                <p-sortIcon field="company"></p-sortIcon>
+              </th>
+              <th style="width: 10%">Action</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-account>
+            <tr>
+              <td class="flex align-items-center">
+                <img
+                  src="../../../assets/avatar.png"
+                  class="w-2rem h-2rem mr-2"
+                  alt=""
+                />{{ account.fullName }}
+              </td>
+              <td style="text-align: center">{{ account.email }}</td>
+              <td style="text-align: center">{{ account.company }}</td>
+              <td>
+                <i
+                  class="pi pi-eye mr-2 pointer"
+                  style="color: blue; font-size: 1.5rem"
+                  title="View"
+                  (click)="viewDetailAccount(account.id)"
+                ></i>
+                <i
+                  [class]="
+                    account.status != 0
+                      ? 'pi pi-lock pointer text-red-500 text-2xl'
+                      : 'pi pi-lock-open pointer text-cyan-500 text-2xl'
+                  "
+                  (click)="deleteCustomerOfHr(account.id)"
+                ></i>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </p-tabPanel>
+  <p-tabPanel header="">
+    <ng-template pTemplate="header">
+      <i class="pi pi-copy mr-2"></i>
+      <span>Curriculum Vitae</span>
+    </ng-template>
+    <div class="card">
+      <p-table
+        #cvs
+        [paginator]="true"
+        [rows]="rows"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        (onPage)="pageChange($event)"
+        [value]="curriculumVitaesOfHr"
+        dataKey="id"
+        [globalFilterFields]="['name']"
+        [responsive]="true"
+        [tableStyle]="{ 'min-width': '20rem' }"
+      >
+        <ng-template pTemplate="caption" class="flex justify-content-between">
+          <div class="font-medium">CURRICULUM VITAE LIST</div>
+          <div class="flex justify-content-end">
+            <div>
+              <span class="p-input-icon-left ml-auto">
+                <i class="pi pi-search"></i>
+                <input
+                  pInputText
+                  class="pl-5 py-2 border-round-smtext-base border-cyan-500"
+                  type="text"
+                  (input)="
+                    cvs.filterGlobal($any($event.target).value, 'contains')
+                  "
+                  placeholder="Search keyword"
+                />
+              </span>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="name" style="width: 30%">
+              Name
+              <p-sortIcon field="name"></p-sortIcon>
+            </th>
+            <th pSortableColumn="poster" style="width: 20%">
+              Post By
+              <p-sortIcon field="poster"></p-sortIcon>
+            </th>
+            <th pSortableColumn="uploadDate" style="width: 20%">
+              Upload Date
+              <p-sortIcon field="uploadDate"></p-sortIcon>
+            </th>
+            <th style="width: 10%">Action</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-cv>
+          <tr>
+            <td style="text-align: left">{{ cv.name }}</td>
+            <td class="flex align-items-center">
+              <img
+                src="../../../assets/avatar.png"
+                class="w-2rem h-2rem mr-2"
+                alt=""
+              />{{ cv.poster }}
+            </td>
+            <td>{{ cv.uploadDate | date : "dd-MM-yyyy" }}</td>
+            <td>
+              <i
+                class="pi pi-eye mr-2 pointer"
+                style="color: blue; font-size: 1.5rem"
+                title="View"
+                (click)="viewFile(cv.id, cv.url)"
+              ></i>
+              <i
+                class="pi pi-trash pointer"
+                style="color: red; font-size: 1.5rem"
+                title="Delete"
+                (click)="deleteCvOfHr(cv.id)"
+              ></i>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </p-tabPanel>
+</p-tabView>
+
+<app-cv-view-file
+  *ngIf="isDisplayViewFileModal"
+  [selectedFileUrl]="selectedFileUrl"
+  [isDisplayViewFileModal]="isDisplayViewFileModal"
+  [selectedFileId]="selectedFileViewId"
+  (closeEvent)="clodeViewFileModel($event)"
+></app-cv-view-file>
+<p-confirmDialog [style]="{ width: '50vw' }"></p-confirmDialog>
+<p-toast></p-toast>

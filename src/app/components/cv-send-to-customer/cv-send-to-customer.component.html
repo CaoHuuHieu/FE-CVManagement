@@ -1,0 +1,102 @@
+<p-dialog
+  header="Send curriculumn to customer"
+  [(visible)]="isDisplaySendCVModal"
+  [modal]="true"
+  [style]="{ width: '40vw', height: '600px' }"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="closeSendEmailModal()"
+>
+  <div>
+    <div class="w-full">
+      <div>Customer</div>
+      <p-multiSelect
+        [options]="customers"
+        [(ngModel)]="selectedCustomers"
+        styleClass="w-full"
+        placeholder="Select customer"
+        optionLabel="name"
+        (onChange)="checkSelected()"
+      >
+        <ng-template let-value pTemplate="selectedItems">
+          <div
+            class="inline-flex align-items-center gap-2 px-1"
+            *ngFor="let customer of selectedCustomers"
+          >
+            <div class="flex align-items-start gap-2">
+              <img src="../../../assets/avatar.png" class="mr-1 w-2rem" />
+              <div>{{ customer.fullName }}</div>
+            </div>
+          </div>
+          <div *ngIf="!selectedCustomers || selectedCustomers.length === 0">
+            Select customer
+          </div>
+        </ng-template>
+        <ng-template let-customer pTemplate="item">
+          <div class="flex align-items-start">
+            <div>
+              <img
+                src="../../../assets/avatar.png"
+                alt=""
+                class="w-2rem h-2rem mr-2"
+              />
+            </div>
+            <div class="">
+              <div class="font-medium">{{ customer.fullName }}</div>
+              <div class="text-sm">{{ customer.company }}</div>
+            </div>
+          </div>
+        </ng-template>
+      </p-multiSelect>
+    </div>
+    <div class="mt-5">
+      <div>Reminder interval time(day)</div>
+      <div
+        *ngFor="let time of reminderIntervalTimes"
+        class="field-checkbox inline ml-5"
+      >
+        <p-radioButton
+          [value]="time"
+          [(ngModel)]="selectedTime"
+          name="reminderTime"
+          (click)="checkSelected()"
+        ></p-radioButton>
+        <label [for]="time" class="ml-2">{{ time }}</label>
+      </div>
+    </div>
+
+    <div class="w-full mt-5">
+      <div class="w-full mb-1">Curriculumns vitaes seleted</div>
+      <div class="ml-5">
+        <p-virtualScroller
+          [value]="seletedCurriculumnVitaes"
+          class="w-full"
+          [style]="{ width: '100%' }"
+          scrollHeight="200px"
+          [itemSize]="50"
+        >
+          <ng-template pTemplate="item" let-cv>
+            <div
+              class="flex align-items-start h-full"
+              [ngClass]="{ 'surface-hover': cv.index % 2 === 0 }"
+            >
+              <div class="font-medium">{{ cv.name }}</div>
+            </div>
+          </ng-template>
+        </p-virtualScroller>
+      </div>
+    </div>
+    <div class="flex align-items-center justify-content-center">
+      <div class="flex justify-content-center mt-2">
+        <p-button
+          styleClass="w-10rem bg-cyan-500 "
+          icon="pi pi-user "
+          label="Assign "
+          [disabled]="!isSelectedAll"
+          [loading]="loading"
+          (onClick)="sendCurriculumToCustomer()"
+        ></p-button>
+      </div>
+    </div>
+  </div>
+</p-dialog>

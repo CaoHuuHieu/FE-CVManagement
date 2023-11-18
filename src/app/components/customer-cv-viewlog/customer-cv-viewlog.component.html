@@ -1,0 +1,121 @@
+<div class="p-5">
+  <div class="card">
+    <p-table
+      #cvs
+      [paginator]="true"
+      [rows]="rows"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      (onPage)="pageChange($event)"
+      [value]="curriculumVitaes"
+      dataKey="id"
+      [globalFilterFields]="['name']"
+      [responsive]="true"
+      [tableStyle]="{ 'min-width': '20rem' }"
+    >
+      <ng-template pTemplate="caption" class="flex justify-content-between">
+        <div>
+          <div class="font-medium mb-3">CURRICULUM VITAE OF CUSTOMER</div>
+        </div>
+        <div class="flex justify-content-between">
+          <div>
+            <div class="text-sm font-normal">Name: {{ customer.fullName }}</div>
+            <div class="text-sm font-normal">
+              Company: {{ customer.company }}
+            </div>
+          </div>
+          <div class="flex">
+            <div>
+              <button
+                *ngIf="role === 'HrManager'"
+                (click)="blockAccount(customer.id, customer.status)"
+                icon="pi pi-external-link"
+                class="border-none outline-none mr-2 border-round-sm text-white font-semibold pointer"
+                style="background-color: #20bdf4; padding: 10px 16px"
+              >
+                {{ customer.status == 0 ? "Unlock Account" : "Block Account" }}
+              </button>
+            </div>
+            <div>
+              <span class="p-input-icon-left ml-auto">
+                <i class="pi pi-search"></i>
+                <input
+                  pInputText
+                  class="pl-5 py-2 border-round-smtext-base border-cyan-500"
+                  type="text"
+                  (input)="
+                    cvs.filterGlobal($any($event.target).value, 'contains')
+                  "
+                  placeholder="Search keyword"
+                />
+              </span>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="name" style="width: 30%">
+            Name
+            <p-sortIcon field="name"></p-sortIcon>
+          </th>
+          <th pSortableColumn="poster" style="width: 20%">
+            Send By
+            <p-sortIcon field="poster"></p-sortIcon>
+          </th>
+          <th pSortableColumn="views" style="width: 10%">
+            Views
+            <p-sortIcon field="views"></p-sortIcon>
+          </th>
+          <th pSortableColumn="lastView" style="width: 20%">
+            Last view
+            <p-sortIcon field="lastView"></p-sortIcon>
+          </th>
+          <th style="width: 10%">Action</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-cv>
+        <tr>
+          <td class="text-left">{{ cv.name }}</td>
+          <td class="text-left flex align-items-center">
+            <img
+              src="../../../assets/avatar.png"
+              class="w-2r h-2rem mr-2"
+              alt=""
+            />
+            <div>
+              <span>{{ cv.poster }}</span> <br />
+              <span>{{ cv.company }}</span>
+            </div>
+          </td>
+          <td>{{ cv.views }}</td>
+          <td>
+            {{ cv.lastView ? (cv.lastView | date : "dd-MM-yyyy") : "Not View" }}
+          </td>
+          <td>
+            <i
+              class="pi pi-eye mr-2 pointer"
+              style="color: blue; font-size: 1.5rem"
+              title="View"
+              (click)="viewFile(cv.id, cv.url)"
+            ></i>
+            <i
+              class="pi pi-trash pointer"
+              style="color: red; font-size: 1.5rem"
+              title="Delete"
+              (click)="deleteFileOfCustomer(cv.id)"
+            ></i>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+<p-toast></p-toast>
+<app-cv-view-file
+  *ngIf="isDisplayViewFileModal"
+  [selectedFileUrl]="selectedFileUrl"
+  [isDisplayViewFileModal]="isDisplayViewFileModal"
+  [selectedFileId]="selectedFileId"
+  (closeEvent)="clodeViewFileModel($event)"
+></app-cv-view-file>
